@@ -47,22 +47,27 @@ var players = [
 let pendingWords = words.length;
 let doneWords = 0;
 let failedWords = 0;
+var play = true;
 var exit = false;
-let lettSing = "letras correctas";
+let lettSing = "letra"
 
 const question = (word) => {
   if(word.status === "pending"){
-    let question = Math.floor(Math.random()*3);
+    console.log(word);
+  console.log(`pending words ${pendingWords}`);
 
-    let resp = undefined;
+  let question = Math.floor(Math.random()*3);
+
+  let resp = undefined;
     do {
       resp = prompt(`Con la "${word.letter}":\n${word.definitions[question]}`);
 
       if(resp !== "" && resp !== null){
         resp = resp.toUpperCase();
-        if(resp === "PASAPALABRA"){
+        if(resp === "pasapalabra"){
           alert(`Se guarda para la siguiente ronda`);
         } else if(resp === "END"){
+          // play = false;
           pendingWords = 0;
           exit = true;
         } else if(resp === word.word){
@@ -70,13 +75,19 @@ const question = (word) => {
           word.status = "done";
           pendingWords--;
           doneWords++;
+          console.log(`pending words ${pendingWords}`);
         } else {
-          alert(`Respuesta incorrecta  :-(\nLa palabra es: ${word.word}`);
+          alert(`Respuesta incorrecta  :-(\nLa palabra es ${word.word}`);
           word.status = "failed";
           pendingWords--;
           failedWords++;
         }
       }
+      alert("linea 80" + exit);
+
+      console.log(words);
+
+        
     } while (resp === null || resp === "" );
   }
 }
@@ -119,26 +130,40 @@ const main = () => {
   
       alert(`Preparado/a ${userName}?\nVamos allá!`);
   
+        alert("linea 142" + exit);
+
       do {
   
         for(let i = 0; i < words.length; i++){
+        alert("linea 149" + exit);
+
           if(exit === false){
+        alert("linea 152" + exit);
+
+            console.log(exit);
             question(words[i]);
   
             if(i === words.length -1){
               round++;
               if(pendingWords !== 0) alert(`Empieza la ronda ${round}`);
             }
-          } 
+          } else { 
+            alert("exit es true");
+          }
         }
   
+        alert("linea 80" + exit);
+  
+        
       } while (pendingWords > 0 && exit === false);
   
       if(exit === false){
         showScore();
       } else{
-        if(doneWords === 1) lettSing = "letra correcta";
-        alert(`Has salido del juego.\nConseguiste ${doneWords} ${lettSing}.\nBye ${userName}!`);
+        if (doneWords === 1) lettSing = "letras"
+
+        alert(`Has salido del juego.\nConseguiste ${doneWords} ${lettSing} correctas.\nBye ${userName}!`);
+        console.log(play);
       }
 } 
 

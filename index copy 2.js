@@ -5,31 +5,25 @@ let round = 1;
 // status can be: done, pending or failed
 let words = [
   {
-    word: "ASTRONAUTA",
+    word: "astronauta",
     definitions: [
-      "Persona que forma parte de la tripulación de una nave espacial o que está entrenada y preparada para hacerlo.",
-      "Individuo que está capacitado para tripular una nave espacial.",
-      "Persona que viaja por el espacio exterior, más allá de la atmósfera de la Tierra."
+      "d1", "d2", "d3"
     ],
     status: "pending",
     letter: "A"
   },
   {
-    word: "BICICLETA",
+    word: "bicicleta",
     definitions: [
-      "Vehículo de dos ruedas movido por una persona, provisto de un manubrio en la parte delantera, un asiento para el conductor y dos pedales.",
-      "En el fútbol, finta en que se pasan alternativamente uno y otro pie por encima del balón para engañar al adversario antes de intentar superarlo.",
-      "Vehículo de dos ruedas, normalmente de igual tamaño, cuyos pedales transmiten el movimiento a la rueda trasera por medio de un plato."
+      "d1", "d2", "d3"
     ],
     status: "pending",
     letter: "B"
   },
   {
-    word: "CASCO",
+    word: "casco",
     definitions: [
-      "Objeto de material muy resistente y forma generalmente semiesférica que se ajusta a la cabeza para protegerla de posibles heridas o golpes.",
-      "Cuerpo de un barco o avión sin el aparejo y las máquinas. ",
-      "Hace referencia al elemento que brinda protección a la cabeza."
+      "d1", "d2", "d3"
     ],
     status: "pending",
     letter: "C"
@@ -47,38 +41,55 @@ var players = [
 let pendingWords = words.length;
 let doneWords = 0;
 let failedWords = 0;
+var play = true;
 var exit = false;
-let lettSing = "letras correctas";
 
 const question = (word) => {
   if(word.status === "pending"){
-    let question = Math.floor(Math.random()*3);
+    console.log(word);
+  console.log(`pending words ${pendingWords}`);
 
-    let resp = undefined;
+  let question = Math.floor(Math.random()*3);
+
+  let resp = undefined;
     do {
       resp = prompt(`Con la "${word.letter}":\n${word.definitions[question]}`);
 
       if(resp !== "" && resp !== null){
-        resp = resp.toUpperCase();
-        if(resp === "PASAPALABRA"){
+        resp = resp.toLowerCase();
+        if(resp === "pasapalabra"){
           alert(`Se guarda para la siguiente ronda`);
-        } else if(resp === "END"){
+        } else if(resp === "end"){
+          // play = false;
           pendingWords = 0;
           exit = true;
+          alert("linea 65" + exit);
+          // main();
         } else if(resp === word.word){
           alert(`Respuesta correcta  !!!`);
           word.status = "done";
           pendingWords--;
           doneWords++;
+          console.log(`pending words ${pendingWords}`);
         } else {
-          alert(`Respuesta incorrecta  :-(\nLa palabra es: ${word.word}`);
+          alert(`Respuesta incorrecta  :-(`);
           word.status = "failed";
           pendingWords--;
           failedWords++;
         }
       }
+      alert("linea 80" + exit);
+
+      console.log(words);
+
+        
     } while (resp === null || resp === "" );
   }
+
+  // actual ya se hace el bucle con las respuestas y se registran los fallos
+  // se muestra el  numero de ronda
+  // se genera la ronda correctamente solo con las palabras pendientes
+// todo mostrar en consola las acertdas, falladas y pendientes para verificar
 }
 
 // function to show the score and ranking
@@ -91,6 +102,9 @@ const showScore = () => {
   players[0].rightLetters = doneWords;
 
   console.info(`**********     Top 5 players    **********`)
+  // for(let i = 0; i < players.length; i++){
+  //   players[i].score = initialScore - players[i].turns;
+  // }
 
   players.sort((a, b) => {
     return b.rightLetters - a.rightLetters;
@@ -99,6 +113,15 @@ const showScore = () => {
   for(let i = 0; i < players.length; i++){
     console.log(`${i + 1}) Jugador/a: ${players[i].name}, Score: ${players[i].rightLetters}`)
   };
+
+  // let showPlayerTurns;
+  // let showPlayerScore;
+  // for(let i = 0; i < players.length; i++){
+  //   if(players[i].name === userName){
+  //     showPlayerTurns =  players[i].turns;
+  //     showPlayerScore = initialScore - players[i].turns
+  //   }         
+  // }
 
   let letSing = "letra";
 
@@ -109,37 +132,56 @@ const showScore = () => {
 }
 
 const main = () => {
+    // if(play){
       do {
         userName = prompt(`Bienvenido/a a Pasapalabra !!\nIngresa tu nombre`);
         players[0].name = userName;
           
       } while (userName === null || userName === "");
   
-      alert(`*** Reglas del juego ***\nRecibirás una pregunta por cada letra del alfabeto. Si la respondes correctamente sumas un punto, en caso contrario no sumas nada. Puedes decir 'pasapalabra' y se guardará la pregunta para la siguiente ronda.\nPuedes salir del juego en cualquier momento escribiendo 'end'.`);
+      alert(`*** Reglas del juego ***\nRecibirás una pregunta por cada letra del alfabeto. Si la repondes correctamente sumas un punto, en caso contrario no sumas nada. Puedes decir 'pasapalabra' y se guardará la pregunta para la siguiente ronda.\nPuedes salir del juego en cualquier momento escribiendo 'end'.`);
   
       alert(`Preparado/a ${userName}?\nVamos allá!`);
   
+        alert("linea 142" + exit);
+
       do {
   
         for(let i = 0; i < words.length; i++){
+        alert("linea 149" + exit);
+
           if(exit === false){
+        alert("linea 152" + exit);
+
+            console.log(exit);
             question(words[i]);
   
             if(i === words.length -1){
               round++;
               if(pendingWords !== 0) alert(`Empieza la ronda ${round}`);
             }
-          } 
+          } else { 
+            alert("exit es true");
+          }
         }
   
+        alert("linea 80" + exit);
+  
+        
       } while (pendingWords > 0 && exit === false);
+      // } while (pendingWords > 0 && play);
   
       if(exit === false){
+        // estoy aqui, poner un alert aqui
         showScore();
       } else{
-        if(doneWords === 1) lettSing = "letra correcta";
-        alert(`Has salido del juego.\nConseguiste ${doneWords} ${lettSing}.\nBye ${userName}!`);
+        alert(`Has salido del juego.\nConseguiste ${doneWords} letras correctas.\nBye ${userName}!`);
+        console.log(play);
       }
+   
+    // } else{
+
+    // }
 } 
 
 
