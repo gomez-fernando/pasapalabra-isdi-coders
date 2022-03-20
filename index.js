@@ -114,7 +114,7 @@ const main = () => {
           
       } while (userName === null || userName === "");
   
-      alert(`*** Reglas del juego ***\nRecibirás una pregunta por cada letra del alfabeto. Si la repondes correctamente sumas un punto, en caso contrario no sumas nada. Puedes decir 'pasapalabra' y se guardará la pregunta para la siguiente ronda.\nPuedes salir del juego en cualquier momento escribiendo 'end'.`);
+      alert(`*** Reglas del juego ***\nRecibirás una pregunta por cada letra del alfabeto. Si la respondes correctamente sumas un punto, en caso contrario no sumas nada. Puedes decir 'pasapalabra' y se guardará la pregunta para la siguiente ronda.\nPuedes salir del juego en cualquier momento escribiendo 'end'.`);
   
       alert(`Preparado/a ${userName}?\nVamos allá!`);
   
